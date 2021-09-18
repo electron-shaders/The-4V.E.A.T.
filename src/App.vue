@@ -13,7 +13,7 @@ export default {
     async mounted() {
         console.log("store>>>", this.$store.state.app);
         const res = await send();
-        console.log("res>>>", res);
+        console.log("res (from https://yesno.wtf/api) >>>", res.answer);
     },
 };
 </script>
