@@ -1,14 +1,12 @@
 <template>
   <div class="demo">
-    <el-button type="primary" v-if="currentPage==='home'" @click="currentPage='demo'">
-        <router-link to="/demo">Go to demo page</router-link>
-    </el-button>
-    <el-button type="primary" v-else @click="currentPage='home'">
-        <router-link to="/">Go to home page</router-link>
-    </el-button>
+    <el-tabs v-model="currentPage">
+      <el-tab-pane label="Home" name="home"></el-tab-pane>
+      <el-tab-pane label="Demo" name="demo"></el-tab-pane>
+    </el-tabs>
+    <router-view/>
     <p class="log">{{ storeLog }}</p>
     <p class="log">{{ axiosLog }}</p>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -36,7 +34,8 @@
 </style>
 
 <script>
-import { send } from "./api/app";
+import { send } from "./api/app"
+import router from "./router"
 export default {
   name: "app",
   data() {
@@ -44,16 +43,21 @@ export default {
       answer: "",
       currentPage: "home",
       storeLog: "store>>> " + this.$store.state.app
-    };
+    }
   },
-  computed:{
-      axiosLog(){
-          return "res from https://yesno.wtf/api>>> " + this.answer
-      }
+  computed: {
+    axiosLog() {
+      return "res from https://yesno.wtf/api>>> " + this.answer;
+    }
+  },
+  watch:{
+    currentPage(newPage,oldPage){
+      router.push({name:`${newPage}`})
+    }
   },
   async mounted() {
     const res = await send();
     this.answer = res.answer;
-  },
-};
+  }
+}
 </script>
