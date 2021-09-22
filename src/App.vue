@@ -1,19 +1,53 @@
 <template>
+  <div class="demo">
     <el-button type="primary">I'm a button</el-button>
+    <p class="log">{{ storeLog }}</p>
+    <p class="log">{{ axiosLog }}</p>
     <router-view></router-view>
+  </div>
 </template>
 
 <style>
+.demo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid grey;
+  border-width: auto;
+  border-radius: 10px;
+  padding: 15px;
+  vertical-align: middle;
+  text-align: center;
+}
+.log {
+  text-align: left;
+  color: white;
+  padding: 3px;
+  padding-left: 4px;
+  border-left: 4px solid darkgrey;
+  background-color: grey;
+}
 </style>
 
 <script>
 import { send } from "./api/app";
 export default {
-    name: "app",
-    async mounted() {
-        console.log("store>>>", this.$store.state.app);
-        const res = await send();
-        console.log("res (from https://yesno.wtf/api) >>>", res.answer);
-    },
+  name: "app",
+  data() {
+    return {
+      answer: "",
+      storeLog: "store>>> " + this.$store.state.app
+    };
+  },
+  computed:{
+      axiosLog(){
+          return "res from https://yesno.wtf/api>>> " + this.answer
+      }
+  },
+  async mounted() {
+    const res = await send();
+    this.answer = res.answer;
+  },
 };
 </script>
