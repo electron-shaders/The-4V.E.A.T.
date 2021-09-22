@@ -1,6 +1,11 @@
 <template>
   <div class="demo">
-    <el-button type="primary">I'm a button</el-button>
+    <el-button type="primary" v-if="currentPage==='home'" @click="currentPage='demo'">
+        <router-link to="/demo">Go to demo page</router-link>
+    </el-button>
+    <el-button type="primary" v-else @click="currentPage='home'">
+        <router-link to="/">Go to home page</router-link>
+    </el-button>
     <p class="log">{{ storeLog }}</p>
     <p class="log">{{ axiosLog }}</p>
     <router-view></router-view>
@@ -37,6 +42,7 @@ export default {
   data() {
     return {
       answer: "",
+      currentPage: "home",
       storeLog: "store>>> " + this.$store.state.app
     };
   },
